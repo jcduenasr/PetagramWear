@@ -1,6 +1,8 @@
 package com.jduenas.petagram;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +43,9 @@ public class ConfigureAccount extends AppCompatActivity implements View.OnClickL
         btSaveAccount   = (Button) findViewById(R.id.btSaveAccount);
         btSaveAccount.setOnClickListener(this);
         etAccount       = (EditText) findViewById(R.id.etAccount);
+
     }
+
 
     @Override
     public void onClick(View view) {
@@ -52,7 +56,8 @@ public class ConfigureAccount extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void saveAccount() {
+
+    private void saveAccount(/*final String accessToken*/) {
 
         RestApiAdapter restApiAdapter = new RestApiAdapter();
         Gson gsonUserSearched = restApiAdapter.construyeGsonDeserializadorDataUserSearched();
@@ -70,6 +75,7 @@ public class ConfigureAccount extends AppCompatActivity implements View.OnClickL
                     editor.putString(getString(R.string.account_name), userAccount.get(0).getUsername());
                     editor.putString(getString(R.string.account_id), userAccount.get(0).getId());
                     editor.putString(getString(R.string.profile_picture), userAccount.get(0).getProfile_picture());
+                   // editor.putString(getString(R.string.access_token), accessToken);
                     editor.commit();
                     Toast.makeText(ConfigureAccount.this,"Cuenta Guardada",Toast.LENGTH_LONG).show();
                 }else{
@@ -85,4 +91,6 @@ public class ConfigureAccount extends AppCompatActivity implements View.OnClickL
         });
 
     }
+
+
 }

@@ -10,4 +10,6 @@ public interface IRecyclerViewFragmentPresenter {
     void obtenerMediosRecientes();
 
     void mostrarMascotasRV();
+    void setLikesOnFirebase(String username, String id_dispositivo, String id_foto_instagram);
+
 }

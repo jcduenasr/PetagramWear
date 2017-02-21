@@ -15,4 +15,9 @@
     <string name="account_name">account_name</string>
     <string name="account_id">account_id</string>
     <string name="profile_picture">profile_picture</string>
+    <string name="menu_notificaciones">Recibir Notificaciones</string>
+    <string name="texto_accion_toque">Ver mi perfil</string>
+    <string name="access_token">access_token</string>
+    <string name="texto_accion_follow">Seguir</string>
+    <string name="texto_accion_ver_usuario">Ver Usuario</string>
 </resources>

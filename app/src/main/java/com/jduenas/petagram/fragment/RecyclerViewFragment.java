@@ -65,7 +65,7 @@ public class RecyclerViewFragment extends Fragment implements IRecyclerViewFragm
 
     @Override
     public MascotaAdaptador crearAdaptador(ArrayList<Mascota> mascotas) {
-        MascotaAdaptador adaptador = new MascotaAdaptador(mascotas,getActivity());
+        MascotaAdaptador adaptador = new MascotaAdaptador(mascotas,getActivity(),presenter);
         return adaptador;
     }
 
@@ -73,4 +73,6 @@ public class RecyclerViewFragment extends Fragment implements IRecyclerViewFragm
     public void inicializarAdaptadorRV(MascotaAdaptador adaptador) {
         rvMascotas.setAdapter(adaptador);
     }
+
+
 }

@@ -66,7 +66,7 @@ public class PerfilFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         rvMascotas.setLayoutManager(glm);
-
+        inicializarListaMascotas();
 
         return  v;
     }
@@ -74,9 +74,9 @@ public class PerfilFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        /*if (isVisibleToUser) {
             inicializarListaMascotas();
-        }
+        }*/
     }
 
     public PerfilMascotaAdaptador adaptador;
@@ -86,7 +86,7 @@ public class PerfilFragment extends Fragment {
     }
 
     public void inicializarListaMascotas(){
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("ConfigureAccount",getContext().MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("ConfigureAccount",getActivity().MODE_PRIVATE);
         String accountId = "";
         String profile_picture = "";
         String accountName = "";

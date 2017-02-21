@@ -19,4 +19,8 @@ public final class JsonKeys {
     public static final String USERNAME                         = "username";
     public static final String PROFILE_PICTURE                  = "profile_picture";
 
+    public static final String RELATIONSHIP_OUTGOING_STATUS     = "outgoing_status";
+    public static final String RELATIONSHIP_INCOMING_STATUS     = "incoming_status";
+    public static final String RELATIONSHIP_TARGET_USER_PRIVATE = "target_user_is_private";
+
 }

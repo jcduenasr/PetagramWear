@@ -54,6 +54,32 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".ConfigureAccount"></activity>
+
+        <service android:name=".notifications.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".notifications.NotificacionIDTokenService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".notifications.BroadcastLikes">
+            <intent-filter>
+                <action android:name="ver_mi_perfil" />
+                <action android:name="follow" />
+                <action android:name="unfollow" />
+                <action android:name="ver_usuario" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".VerUsuario">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

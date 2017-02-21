@@ -1,5 +1,7 @@
 package com.jduenas.petagram.restApi.deserializer;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -24,8 +26,21 @@ public class MascotaDeserializer implements JsonDeserializer<MascotaResponse>{
     public MascotaResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         Gson gson = new Gson();
         MascotaResponse mascotaResponse = gson.fromJson(json, MascotaResponse.class);
-        JsonArray mascotaResponseData = json.getAsJsonObject().getAsJsonArray(JsonKeys.MEDIA_RESPONSE_ARRAY);
-        mascotaResponse.setMascotas(deserializerMascotaFromJson(mascotaResponseData));
+        try {
+            JsonArray mascotaResponseData = json.getAsJsonObject().getAsJsonArray(JsonKeys.MEDIA_RESPONSE_ARRAY);
+            mascotaResponse.setMascotas(deserializerMascotaFromJson(mascotaResponseData));
+        }catch (Exception e){
+            try{
+                JsonObject mascotaResponseData = json.getAsJsonObject().getAsJsonObject(JsonKeys.MEDIA_RESPONSE_ARRAY);
+
+                JsonArray mascotaResponseDataA = new JsonArray();
+                mascotaResponseDataA.add(mascotaResponseData);
+                mascotaResponse.setMascotas(deserializerMascotaFromJson(mascotaResponseDataA));
+            }catch (Exception f) {
+                Log.d("Exception des", "-> " + e.toString());
+                Log.d("data NULL", "-> " + json);
+            }
+        }
         return mascotaResponse;
     }
 
@@ -36,10 +51,17 @@ public class MascotaDeserializer implements JsonDeserializer<MascotaResponse>{
             JsonObject userJson     = mascotaResponseDataObject.getAsJsonObject(JsonKeys.USER);
             String id               = userJson.get(JsonKeys.USER_ID).getAsString();
             String nombreCompleto   = userJson.get(JsonKeys.USER_FULL_NAME).getAsString();
+            String username = "";
+            try {
+                username   = userJson.get(JsonKeys.USERNAME).getAsString();
+            }catch (Exception e){
+                username   = "";
+            }
 
             JsonObject imageJson            = mascotaResponseDataObject.getAsJsonObject(JsonKeys.MEDIA_IMAGES);
             JsonObject stdResolutionJson    = imageJson.getAsJsonObject(JsonKeys.MEDIA_STANDARD_RESOLUTION);
             String url                      = stdResolutionJson.get(JsonKeys.MEDIA_URL).getAsString();
+            String id_foto                  = mascotaResponseDataObject.get(JsonKeys.USER_ID).getAsString();
 
             JsonObject likesJson = mascotaResponseDataObject.getAsJsonObject(JsonKeys.MEDIA_LIKES);
             int likes            = likesJson.get(JsonKeys.MEDIA_LIKES_COUNT).getAsInt();
@@ -49,6 +71,8 @@ public class MascotaDeserializer implements JsonDeserializer<MascotaResponse>{
             currentMascota.setNombreCompleto(nombreCompleto);
             currentMascota.setUrl_foto(url);
             currentMascota.setLikes(likes);
+            currentMascota.setId_foto(id_foto);
+            currentMascota.setUsername(username);
 
             mascotas.add(currentMascota);
         }

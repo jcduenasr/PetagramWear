@@ -22,4 +22,9 @@
         android:orderInCategory="103"
         >
     </item>
+    <item android:id="@+id/mNotifications"
+        android:title="@string/menu_notificaciones"
+        android:orderInCategory="104"
+        >
+    </item>
 </menu>

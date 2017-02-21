@@ -17,4 +17,5 @@ public interface IRecyclerViewFragment {
     public MascotaAdaptador crearAdaptador(ArrayList<Mascota> mascotas);
 
     public void inicializarAdaptadorRV(MascotaAdaptador adaptador);
+
 }

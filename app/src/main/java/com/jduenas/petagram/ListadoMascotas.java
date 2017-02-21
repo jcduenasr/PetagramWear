@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import com.jduenas.petagram.adapter.MascotaAdaptador;
 import com.jduenas.petagram.pojo.Mascota;
 import com.jduenas.petagram.presenter.IListadoMascotasFavoritasPresenter;
+import com.jduenas.petagram.presenter.IRecyclerViewFragmentPresenter;
 import com.jduenas.petagram.presenter.ListadoMascotasPresenter;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class ListadoMascotas extends AppCompatActivity implements IListadoMascot
     ArrayList<Mascota> mascotas;
     private RecyclerView listaMascotas;
     private IListadoMascotasFavoritasPresenter presenter;
+    private IRecyclerViewFragmentPresenter presenter2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class ListadoMascotas extends AppCompatActivity implements IListadoMascot
 
     @Override
     public MascotaAdaptador crearAdaptador(ArrayList<Mascota> mascotas) {
-        MascotaAdaptador adaptador = new MascotaAdaptador(mascotas,this);
+        MascotaAdaptador adaptador = new MascotaAdaptador(mascotas,this,presenter2);
         return adaptador;
     }
 

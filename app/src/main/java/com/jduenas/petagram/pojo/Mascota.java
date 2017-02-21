@@ -9,6 +9,7 @@ public class Mascota {
     private String nombreCompleto;
     private int likes;
     private String url_foto;
+    private String id_foto;
 
     private String username;
     private String bio;
@@ -86,5 +87,13 @@ public class Mascota {
 
     public void setProfile_picture(String profile_picture) {
         this.profile_picture = profile_picture;
+    }
+
+    public String getId_foto() {
+        return id_foto;
+    }
+
+    public void setId_foto(String id_foto) {
+        this.id_foto = id_foto;
     }
 }

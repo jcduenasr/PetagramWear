@@ -2,6 +2,7 @@ package com.jduenas.petagram;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,18 +12,27 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.jduenas.petagram.adapter.MascotaAdaptador;
 import com.jduenas.petagram.adapter.PageAdapter;
 import com.jduenas.petagram.fragment.PerfilFragment;
 import com.jduenas.petagram.fragment.RecyclerViewFragment;
 import com.jduenas.petagram.pojo.Mascota;
+import com.jduenas.petagram.restApi.EndpointsApi;
+import com.jduenas.petagram.restApi.adapter.RestApiAdapter;
+import com.jduenas.petagram.restApi.model.UsuarioResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    String var="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +55,13 @@ public class MainActivity extends AppCompatActivity {
         }
         tabLayout= (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+        /*Bundle b = getIntent().getExtras();
+        if (b!=null){
+            var = b.getString("flag");
+        }*/
         setUpViewPager();
-       /* listaMascotas = (RecyclerView) findViewById(R.id.rvMascotas);
+        viewPager.setCurrentItem(1);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-
-        listaMascotas.setLayoutManager(llm);
-        inicializarListaMascotas();
-        inicializarAdaptador();*/
     }
 
     private ArrayList<Fragment> agregarFragments(){
@@ -66,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_dog_house);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_dog);
+
     }
 
 
@@ -96,7 +107,51 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,ListadoMascotas.class);
                 startActivity(intent);
                 break;
+            case R.id.mNotifications:
+                enviarToken();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public  void enviarToken(){
+        SharedPreferences sharedPref = this.getSharedPreferences("ConfigureAccount",this.MODE_PRIVATE);
+        String accountName = "";
+        try{
+            accountName = sharedPref.getString(getString(R.string.account_name), "");
+        }catch (Exception e){
+            accountName = "";
+        }
+        if (!accountName.equals("")) {
+            String token = FirebaseInstanceId.getInstance().getToken();
+            Log.d("TOKEN", token);
+            sendRegistrationToServer(token, accountName);
+        }else{
+            Toast.makeText(this, "Primero debe configurar una cuenta de instragram para recibir notificaciones", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void sendRegistrationToServer(String token, String accountName) {
+
+        Log.d("TOKEN", "sendRegistrationToServer: " + token);
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndpointsApi endPoints = restApiAdapter.establecerConexionRestAPIHeroku();
+        Call<UsuarioResponse> usuarioResponseCall = endPoints.registrarTokenID(token,accountName);
+
+        usuarioResponseCall.enqueue(new Callback<UsuarioResponse>() {
+            @Override
+            public void onResponse(Call<UsuarioResponse> call, Response<UsuarioResponse> response) {
+                UsuarioResponse usuarioResponse = response.body();
+                //Log.d("usuarioresponse", usuarioResponse.getId_dispositivo());
+                //Log.d("USUARIO_FIREBASE", usuarioResponse.getId_usuario_instagram());
+            }
+
+            @Override
+            public void onFailure(Call<UsuarioResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 }
